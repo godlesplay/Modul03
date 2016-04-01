@@ -7,63 +7,83 @@ namespace Kadry
 {
     class Adres
     {
-        private string miejscowosc;
-        private string kod;
-        private string nazwaUlicy;
-        private int numerDomu;
-        private int? numerMieszkania;
+        public string Miejscowosc { get; set; }
+        public string Kod { get; set; }
+        public string NazwaUlicy { get; set; }
+        public int NumerDomu { get; set; }
+        public int? NumerMieszkania { get; set; }
 
         public Adres(int numerDomu, int? numerMieszkania, string nazwaUlicy, string kod, string miejscowosc)
         {
-            this.numerDomu = numerDomu;
-            this.numerMieszkania = numerMieszkania;
-            this.nazwaUlicy = nazwaUlicy;
-            this.kod = kod;
-            this.miejscowosc = miejscowosc;
+            this.NumerDomu = numerDomu;
+            this.NumerMieszkania = numerMieszkania;
+            this.NazwaUlicy = nazwaUlicy;
+            this.Kod = kod;
+            this.Miejscowosc = miejscowosc;
         }
         public Adres(int numerDomu, int? numerMieszkania, string nazwaUlicy)
-            :this(numerDomu,numerMieszkania,nazwaUlicy,"02-222", "Warszawa")
-        {            
+            : this(numerDomu, numerMieszkania, nazwaUlicy, "02-222", "Warszawa")
+        {
         }
         public Adres(int numerDomu, int? numerMieszkania)
             : this(numerDomu, numerMieszkania, "Aleje Jerozolimskie")
         {
         }
         public Adres(int numerDomu)
-            :this(numerDomu, null)
-        {            
+            : this(numerDomu, null)
+        {
         }
 
         public Adres(Adres adres)
-            : this(adres.numerDomu, adres.numerMieszkania, adres.nazwaUlicy, adres.kod,adres.miejscowosc)
+            : this(adres.NumerDomu, adres.NumerMieszkania, adres.NazwaUlicy, adres.Kod, adres.Miejscowosc)
         {
         }
 
-          
+
+
     }
-       class Osoba
+    class Osoba
     {
-        private string nazwisko;
-        private string imie;
-        private int numerEwidencyjny;
-        private Adres adresZamieszkania;
+        public string Nazwisko { get; set; }
+        public string Imie { get; set; }
+        readonly private int numerEwidencyjny;
+        public Adres AdresZamieszkania { get; set; }
         private int rokUrodzenia;
 
-       public Osoba(int numerEwidencyjny, int rokUrodzenia, string imie, string nazwisko, Adres adres)
+        public int RokUrodzenia
         {
-            this.rokUrodzenia = rokUrodzenia;
+            get { return rokUrodzenia; }
+            set
+            {
+                if (value > DateTime.Now.Year)
+                    throw new ArgumentOutOfRangeException("Rok urodzenia musi być wcześniejszy od bieżącego");
+                rokUrodzenia = value;
+            }
+        }
+
+        public int NumerEwidencyjny
+        {
+            get { return numerEwidencyjny; }
+        }
+
+        public int Wiek
+        {
+            get { return DateTime.Now.Year - rokUrodzenia; }
+        }
+
+        public Osoba(int numerEwidencyjny, int rokUrodzenia, string imie, string nazwisko, Adres adres)
+        {
+            this.RokUrodzenia = rokUrodzenia;
             this.numerEwidencyjny = numerEwidencyjny;
-            this.imie = imie;
-            this.nazwisko = nazwisko;
-            adresZamieszkania = adres;
+            this.Imie = imie;
+            this.Nazwisko = nazwisko;
+            AdresZamieszkania = adres;
         }
 
         public Osoba(int numerEwidencyjny, int rokUrodzenia, string imie, string nazwisko, int numerDomu, int? numerMieszkania, string nazwaUlicy, string kod, string miejscowosc)
-            : this(numerEwidencyjny, rokUrodzenia, imie, nazwisko, new Adres(numerDomu,numerMieszkania,nazwaUlicy,kod,miejscowosc))
-        {         
+            : this(numerEwidencyjny, rokUrodzenia, imie, nazwisko, new Adres(numerDomu, numerMieszkania, nazwaUlicy, kod, miejscowosc))
+        {
         }
-
-        
 
         public Osoba(int numerEwidencyjny, int rokUrodzenia, string imie, int numerDomu)
             : this(numerEwidencyjny, rokUrodzenia, imie, "Kowalski", numerDomu, null, "Aleje Jerrozolimskie", "02-222", "Warszawa")
@@ -72,9 +92,9 @@ namespace Kadry
         public Osoba(Osoba osoba)
         {
             numerEwidencyjny = osoba.numerEwidencyjny;
-            imie = osoba.imie;
-            nazwisko = osoba.nazwisko;
-            adresZamieszkania = new Adres(osoba.adresZamieszkania);            
-        }         
+            Imie = osoba.Imie;
+            Nazwisko = osoba.Nazwisko;
+            AdresZamieszkania = new Adres(osoba.AdresZamieszkania);
+        }
     }
 }
