@@ -15,6 +15,28 @@ namespace Listy
 
         private Wezel glowa=null;
 
+        private Wezel ZnajdzWezel(int indeks)
+        {
+            int i = 0;
+            Wezel tmp = glowa;
+            while(tmp!=null && i < indeks)
+            {
+                tmp = tmp.Nastepny;
+                i++;
+            }
+            if (tmp == null)
+            {
+                throw new IndexOutOfRangeException("Nie ma elementu o podanym indeksie");
+            }
+            return tmp;
+        }
+
+        public string this[int indeks]
+        {
+            get { return ZnajdzWezel(indeks).Dane; }
+            set { ZnajdzWezel(indeks).Dane = value; }
+        }
+
         public bool CzyPusta()
         {
             return glowa == null;
