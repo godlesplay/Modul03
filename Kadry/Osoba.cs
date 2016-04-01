@@ -77,7 +77,7 @@ namespace Kadry
             this.numerEwidencyjny = numerEwidencyjny;
             this.Imie = imie;
             this.Nazwisko = nazwisko;
-            AdresZamieszkania = adres;
+            this.AdresZamieszkania = adres;
         }
 
         public Osoba(int numerEwidencyjny, int rokUrodzenia, string imie, string nazwisko, int numerDomu, int? numerMieszkania, string nazwaUlicy, string kod, string miejscowosc)
