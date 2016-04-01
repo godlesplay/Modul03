@@ -7,19 +7,19 @@ namespace Kadry
 {
     class Adres
     {
-        private string miejscowosc;
-        private string kod;
-        private string nazwaUlicy;
-        private int numerDomu;
-        private int? numerMieszkania;
+        public string Miejscowosc { set; get; }
+        public string Kod { set; get; }
+        public string NazwaUlicy { set; get; }
+        public int NumerDomu { set; get; }
+        public int? NumerMieszkania { set; get; }
 
         public Adres(int numerDomu, int? numerMieszkania, string nazwaUlicy, string kod, string miejscowosc)
         {
-            this.numerDomu = numerDomu;
-            this.numerMieszkania = numerMieszkania;
-            this.nazwaUlicy = nazwaUlicy;
-            this.kod = kod;
-            this.miejscowosc = miejscowosc;
+            this.NumerDomu = numerDomu;
+            this.NumerMieszkania = numerMieszkania;
+            this.NazwaUlicy = nazwaUlicy;
+            this.Kod = kod;
+            this.Miejscowosc = miejscowosc;
         }
         public Adres(int numerDomu, int? numerMieszkania, string nazwaUlicy)
             :this(numerDomu,numerMieszkania,nazwaUlicy,"02-222", "Warszawa")
@@ -35,7 +35,7 @@ namespace Kadry
         }
 
         public Adres(Adres adres)
-            : this(adres.numerDomu, adres.numerMieszkania, adres.nazwaUlicy, adres.kod,adres.miejscowosc)
+            : this(adres.NumerDomu, adres.NumerMieszkania, adres.NazwaUlicy, adres.Kod,adres.Miejscowosc)
         {
         }
 
@@ -43,27 +43,25 @@ namespace Kadry
     }
        class Osoba
     {
-        private string nazwisko;
-        private string imie;
-        private int numerEwidencyjny;
-        private Adres adresZamieszkania;
+        public string Nazwisko { set; get; }
+        public string Imie { set; get; }
+        readonly private int numerEwidencyjny;  //można zainicjować ją w konstruktorze
+        public Adres AdresZamieszkania { set; get; }
         private int rokUrodzenia;
 
        public Osoba(int numerEwidencyjny, int rokUrodzenia, string imie, string nazwisko, Adres adres)
         {
-            this.rokUrodzenia = rokUrodzenia;
+            this.RokUrodzenia = rokUrodzenia;
             this.numerEwidencyjny = numerEwidencyjny;
-            this.imie = imie;
-            this.nazwisko = nazwisko;
-            adresZamieszkania = adres;
+            this.Imie = imie;
+            this.Nazwisko = nazwisko;
+            AdresZamieszkania = adres;
         }
 
         public Osoba(int numerEwidencyjny, int rokUrodzenia, string imie, string nazwisko, int numerDomu, int? numerMieszkania, string nazwaUlicy, string kod, string miejscowosc)
             : this(numerEwidencyjny, rokUrodzenia, imie, nazwisko, new Adres(numerDomu,numerMieszkania,nazwaUlicy,kod,miejscowosc))
         {         
         }
-
-        
 
         public Osoba(int numerEwidencyjny, int rokUrodzenia, string imie, int numerDomu)
             : this(numerEwidencyjny, rokUrodzenia, imie, "Kowalski", numerDomu, null, "Aleje Jerrozolimskie", "02-222", "Warszawa")
@@ -72,9 +70,30 @@ namespace Kadry
         public Osoba(Osoba osoba)
         {
             numerEwidencyjny = osoba.numerEwidencyjny;
-            imie = osoba.imie;
-            nazwisko = osoba.nazwisko;
-            adresZamieszkania = new Adres(osoba.adresZamieszkania);            
-        }         
+            Imie = osoba.Imie;
+            Nazwisko = osoba.Nazwisko;
+            AdresZamieszkania = new Adres(osoba.AdresZamieszkania);            
+        }    
+        
+        public int NumerEwindencyjny
+        {
+            get { return numerEwidencyjny;  }
+        }   
+        
+        public int RokUrodzenia
+        {
+            get { return rokUrodzenia; }
+            set
+            {
+                if (value > DateTime.Now.Year)
+                    throw new ArgumentOutOfRangeException("Rok urodzenia musi być wczesniejszy od bieżącego");
+                rokUrodzenia = value;
+            }
+        }
+        
+        public int Wiek
+        {
+            get { return DateTime.Now.Year - rokUrodzenia; }
+        }  
     }
 }
